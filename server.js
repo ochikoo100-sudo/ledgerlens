@@ -8,7 +8,10 @@ const { WebSocketServer } = require('ws');
 
 const PORT = process.env.PORT || 3000;
 const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, 'data');
-const GAME = fs.readFileSync(path.join(__dirname, 'public', 'index.html'), 'utf8');
+// The game file can sit at the top level (index.html) or in public/index.html
+const GAME_PATH = [path.join(__dirname, 'index.html'), path.join(__dirname, 'public', 'index.html')].find(p => fs.existsSync(p));
+if (!GAME_PATH) { console.error('Game file missing: upload index.html to the top level of the repository.'); process.exit(1); }
+const GAME = fs.readFileSync(GAME_PATH, 'utf8');
 
 // ---------------- storage ----------------
 const mem = { players: {}, saves: {}, ids: {} }; // ids: uid -> sha256(token)
