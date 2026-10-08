@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: ledger-lens
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /healthz
+    envVars:
+      - key: DATABASE_URL
+        sync: false
